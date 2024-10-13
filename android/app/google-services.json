@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "829865279891",
+    "project_id": "login-use-apple-github-twitter",
+    "storage_bucket": "login-use-apple-github-twitter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829865279891:android:a0c4c556f61e56fb062866",
+        "android_client_info": {
+          "package_name": "com.example.login_with_github_twitter_apple"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUuKHjS2I5AE1uKsso5sznpkNHgo_W1yk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
