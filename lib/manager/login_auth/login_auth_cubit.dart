@@ -12,7 +12,7 @@ class LoginAuthCubit extends Cubit<LoginAuthState> {
   LoginAuthCubit() : super(LoginAuthInitial());
 
   UserModel? user;
-  Future<void> loginInWithTwitter() async {
+  Future<void> loginWithTwitter() async {
     emit(LoginAuthLoading());
     try {
       final twitterLogin = TwitterLogin(

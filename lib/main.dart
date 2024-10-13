@@ -70,7 +70,7 @@ class MyHomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await BlocProvider.of<LoginAuthCubit>(context).loginInWithTwitter();
+          await BlocProvider.of<LoginAuthCubit>(context).loginWithTwitter();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
