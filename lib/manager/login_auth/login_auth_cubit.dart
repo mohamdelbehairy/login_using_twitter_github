@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:github_sign_in/github_sign_in.dart';
 import 'package:login_with_github_twitter_apple/core/models/user_model.dart';
 import 'package:login_with_github_twitter_apple/core/utils/constants.dart';
 import 'package:twitter_login/twitter_login.dart';
@@ -43,10 +45,42 @@ class LoginAuthCubit extends Cubit<LoginAuthState> {
     }
   }
 
+  Future<void> loginWithGithub(BuildContext context) async {
+    emit(LoginAuthLoading());
+    try {
+      final GitHubSignIn gitHubSignIn = GitHubSignIn(
+          clientId: Constants.githubClientID,
+          clientSecret: Constants.githubClientSecret,
+          redirectUrl: Constants.githubRedirectURL);
+
+      final result = await gitHubSignIn.signIn(context);
+      if (result.status == GitHubSignInResultStatus.ok) {
+        final githubAuthCredential =
+            GithubAuthProvider.credential(result.token!);
+
+        var data = await FirebaseAuth.instance
+            .signInWithCredential(githubAuthCredential);
+
+        user = UserModel(
+            name: data.user!.displayName,
+            image: data.user!.photoURL,
+            auth: 'Github');
+
+        log('userName: ${data.user?.displayName}');
+        log('userID: ${data.user?.uid}');
+        log('userImage: ${data.user?.photoURL}');
+
+        emit(LoginWithGithub());
+      }
+    } catch (e) {
+      emit(LoginAuthFailure(errorMessage: e.toString()));
+      log('error from login in with github $e');
+    }
+  }
+
   @override
   void onChange(Change<LoginAuthState> change) {
     log('change $change');
     super.onChange(change);
   }
 }
-

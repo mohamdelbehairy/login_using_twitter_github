@@ -8,6 +8,8 @@ final class LoginAuthLoading extends LoginAuthState {}
 
 final class LoginWithTwitter extends LoginAuthState {}
 
+final class LoginWithGithub extends LoginAuthState {}
+
 final class LoginAuthFailure extends LoginAuthState {
   final String errorMessage;
 
