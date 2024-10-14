@@ -66,10 +66,6 @@ class LoginAuthCubit extends Cubit<LoginAuthState> {
             image: data.user!.photoURL,
             auth: 'Github');
 
-        log('userName: ${data.user?.displayName}');
-        log('userID: ${data.user?.uid}');
-        log('userImage: ${data.user?.photoURL}');
-
         emit(LoginWithGithub());
       }
     } catch (e) {

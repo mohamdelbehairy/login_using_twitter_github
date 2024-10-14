@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:login_with_github_twitter_apple/firebase_options.dart';
 import 'package:login_with_github_twitter_apple/manager/login_auth/login_auth_cubit.dart';
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: const MyHomePage(title: 'Flutter Login Demo'),
       ),
     );
   }
@@ -45,36 +46,67 @@ class MyHomePage extends StatelessWidget {
       body: BlocBuilder<LoginAuthCubit, LoginAuthState>(
         builder: (context, state) {
           var user = BlocProvider.of<LoginAuthCubit>(context).user;
-          return user != null
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: CircleAvatar(
-                        radius: 100,
-                        backgroundImage: NetworkImage(user.image!),
-                      ),
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 32),
+              if (user != null)
+                Align(
+                  alignment: Alignment.center,
+                  child: CircleAvatar(
+                    radius: 100,
+                    backgroundImage: NetworkImage(user.image!),
+                  ),
+                ),
+              const SizedBox(height: 16),
+              if (user != null)
+                Text('Name: ${user.name}',
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold)),
+              if (user != null)
+                Text('Auth provider: ${user.auth}',
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold)),
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      await BlocProvider.of<LoginAuthCubit>(context)
+                          .loginWithTwitter();
+                    },
+                    child: Container(
+                        height: 55,
+                        width: 55,
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(8)),
+                        child: const Icon(FontAwesomeIcons.xTwitter,
+                            color: Colors.white)),
+                  ),
+                  const SizedBox(width: 16),
+                  GestureDetector(
+                    onTap: () async {
+                      await BlocProvider.of<LoginAuthCubit>(context)
+                          .loginWithGithub(context);
+                    },
+                    child: Container(
+                      height: 55,
+                      width: 55,
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: const Icon(FontAwesomeIcons.github,
+                          color: Colors.white),
                     ),
-                    const SizedBox(height: 16),
-                    Text('UserName: ${user.name}',
-                        style: const TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold)),
-                    Text('Auth provider: ${user.auth}',
-                        style: const TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold)),
-                  ],
-                )
-              : const SizedBox();
+                  ),
+                ],
+              ),
+              const SizedBox(height: 40),
+            ],
+          );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await BlocProvider.of<LoginAuthCubit>(context)
-              .loginWithGithub(context);
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
